@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
     const userWithID = {...user, id: uuidv4()}; // create new user object that have ID
 
     users.push(userWithID);
-    res.send(`User with the name ${user.firstName} added to the database!`);
+    res.send(`User with the name ${user.firstName} has been added to the database!`);
 });
 
 // Get user's information by id
@@ -31,7 +31,30 @@ router.delete('/:id', (req, res) => {
     const id = req.params.id;
     users = users.filter((user) => user.id !== id);
 
-    res.send(`User with the id ${id} deleted from the database!`);
+    res.send(`User with the id ${id} has been deleted from the database!`);
+});
+
+// Update user's information
+router.patch('/:id', (req, res) => {
+    const id = req.params.id;
+    const {firstName, lastName, age} = req.body;
+    const user = users.find((user) => user.id === id);
+    if(!user)
+        res.send(`User with the id ${id} does not exists!`)
+    else {
+        if(firstName) {
+            user.firstName = firstName;
+        }
+    
+        if(lastName) {
+            user.lastName = lastName;
+        }
+    
+        if(age) {
+            user.age = age;
+        }
+    }   
+    res.send(`User with the id ${id} has been updated completely!`)
 });
 
 export default router;
