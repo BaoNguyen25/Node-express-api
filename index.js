@@ -2,7 +2,6 @@ import express from 'express';
 import bodyParser from 'body-parser'; // allow take in post request body 
 import usersRoutes from './routes/users.js';
 
-
 const app = express(); // initialize express application   
 const PORT = 5000;
 
