@@ -17,22 +17,32 @@ export const createUser = (req, res) => {
 export const getUser = (req, res) => {
     const id = req.params.id;
     const foundUser = users.find((user) => user.id === id);
-    res.send(foundUser);
+
+    if(!foundUser)
+        res.status(404).send('User with the given ID does not exists!');
+    else
+        res.send(foundUser);
 }
 
 export const deleteUser = (req, res) => {
     const id = req.params.id;
-    users = users.filter((user) => user.id !== id); // remove user with specific ID
+    const foundUser = users.find((user) => user.id === id);
 
-    res.send(`User with the id ${id} has been deleted from the database!`);
+    if(!foundUser)
+        res.status(404).send('User with the given ID does not exists!');
+    else {
+        users = users.filter((user) => user.id !== id); // remove user with specific ID
+        res.send(`User with the id ${id} has been deleted from the database!`);
+    }
 }
 
 export const updateUser = (req, res) => {
     const id = req.params.id;
     const {firstName, lastName, age} = req.body;
     const user = users.find((user) => user.id === id);
+
     if(!user)
-        res.send(`User with the id ${id} does not exists!`)
+        res.status(404).send(`User with the given id does not exists!`);
     else {
         if(firstName) {
             user.firstName = firstName;
@@ -45,6 +55,6 @@ export const updateUser = (req, res) => {
         if(age) {
             user.age = age;
         }
+        res.send(`User with the id ${id} has been updated completely!`);
     }   
-    res.send(`User with the id ${id} has been updated completely!`)
 }
